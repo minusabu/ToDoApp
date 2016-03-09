@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jp="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>My List</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
+        <h:outputStylesheet name="./css/layout.css"/>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </h:head>
+    <h:body>
+        <div data-role="page">
+            <div data-role="header">
+                <a href="#popupAddItem" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left ui-btn-a" data-transition="pop">Add Item</a>
+                <div data-role="popup" id="popupAddItem" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3>Enter the item</h3>
+                        <h:form id="newItemForm">
+                            <h:inputText id="itemNameID" jp:placeholder="Item Name" value="#{itemController.theModel.itemName}"/>
+                            <h:inputText id="quantityID" jp:placeholder="Quantity" value="#{itemController.theModel.quantity}"/>
+
+                            <h:selectOneMenu id="itemPriorityID" value="#{itemController.theModel.priority}">
+                                <f:selectItem itemLabel="Pick your priority" itemValue="" />
+                                <f:selectItem itemLabel="High" itemValue="High" />
+                                <f:selectItem itemLabel="Medium" itemValue="Medium" />
+                                <f:selectItem itemLabel="Low" itemValue="Low" />
+                            </h:selectOneMenu>
+                            <div class="message">
+
+                                <h:outputText id="resultStr" value="#{itemController.validationMessage}"/><br/><br/>
+
+                            </div>
+                            <h:commandButton value="Add Item" id="addNewItemID" action="#{itemController.addNewItem(loginController.theModel.email,listController.theModel.listName)}"/>
+
+                        </h:form>
+                    </div>
+                </div>
+                <h1>ToDoMate</h1>
+                <a href="#popupLogout" data-rel="popup" data-position-to="window" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-power ui-btn-icon-left ui-btn-a" data-transition="pop">Logout</a>
+                <div data-role="popup" id="popupLogout" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3>Are you sure you want to Logout?</h3>
+                        <h:form id="logoutForm">
+                            <h:commandButton value="Yes" id="yesID" class="ui-btn ui-btn-inline" action="#{loginController.logout}"/>
+                            <h:commandButton value="No" id="noID" class="ui-btn- ui-btn-inline" action="userLandingPage.xhtml"/>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <br/><br/><center><h2><h:outputText value="#{listController.theModel.listName}"/></h2></center><br/><br/>
+            <div data-role="main" class="ui-content">
+                <div class="ui-field-contain">
+                    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search items..." data-inset="true">
+                        <li data-role="list-divider">High</li>    
+                        <ui:repeat value="#{listController.myHighItems}" var="item">
+                            <li>
+                                <a href="#popupdetails" data-rel="popup" data-position="window" data-transition="pop">
+                                    <div class="#{item.status}"><h:outputText value="#{item.itemName}"/> (<h:outputText value="#{item.quantity}"/>)</div>
+                                </a>
+                                <div data-role="popup" id="popupdetails" data-theme="a" class="ui-corner-all">
+                                    <div style="padding:10px 20px;">
+                                        <h:form id="completeForm">
+                                            <h3><h:outputText value="#{item.itemName}"/></h3>
+                                            <h4>Added by: <h:outputText id="addedByID1" value="#{listController.findUserName(item.accountId)}"/></h4>
+                                            <h:commandButton value="Mark as Complete" id="completeId" action="#{listController.performCompletion(item.itemId)}" rendered="#{listController.isPending(item.status)}"/>
+                                            <h:commandButton value="Add back to List" id="returnId" action="#{listController.performAddBack(item.itemId)}" rendered="#{listController.isCompleted(item.status)}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:repeat>
+                        <li data-role="list-divider">Medium</li>    
+                        <ui:repeat value="#{listController.myItems}" var="item">
+                            <li>
+                                <a href="#popupdetails1" data-rel="popup" data-position="window" data-transition="pop">
+                                    <div class="#{item.status}"><h:outputText value="#{item.itemName}"/> (<h:outputText value="#{item.quantity}"/>)</div>
+                                </a>
+                                <div data-role="popup" id="popupdetails1" data-theme="a" class="ui-corner-all">
+                                    <div style="padding:10px 20px;">
+                                        <h:form id="completeForm2">
+                                            <h3><h:outputText value="#{item.itemName}"/></h3>
+                                            <h4>Added by: <h:outputText id="addedByID2" value="#{listController.findUserName(item.accountId)}"/></h4>
+                                            <h:commandButton value="Mark as Complete" id="completeId1" action="#{listController.performCompletion(item.itemId)}" rendered="#{listController.isPending(item.status)}"/>
+                                            <h:commandButton value="Add back to List" id="returnId1" action="#{listController.performAddBack(item.itemId)}" rendered="#{listController.isCompleted(item.status)}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:repeat>
+                        <li data-role="list-divider">Low</li>    
+                        <ui:repeat value="#{listController.myLowItems}" var="item">
+                            <li>
+                                <a href="#popupdetails2" data-rel="popup" data-position="window" data-transition="pop">
+                                    <div class="#{item.status}"><h:outputText value="#{item.itemName}"/> (<h:outputText value="#{item.quantity}"/>)</div>
+                                </a>
+                                <div data-role="popup" id="popupdetails2" data-theme="a" class="ui-corner-all">
+                                    <div style="padding:10px 20px;">
+                                        <h:form id="completeForm3">
+                                            <h3><h:outputText value="#{item.itemName}"/></h3>
+                                            <h4>Added by: <h:outputText id="addedByID3" value="#{listController.findUserName(item.accountId)}"/></h4>
+                                            <h:commandButton value="Mark as Complete" id="completeId2" action="#{listController.performCompletion(item.itemId)}" rendered="#{listController.isPending(item.status)}"/>
+                                            <h:commandButton value="Add back to List" id="returnId2" action="#{listController.performAddBack(item.itemId)}" rendered="#{listController.isCompleted(item.status)}"/>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </div>
+                <br/><br/>
+
+
+                <h:form id="buttons">
+                    <h:commandButton value="Back to main page" id="backID" action="userLandingPage.xhtml"/>
+                </h:form>
+                <!--<h:commandButton value="Invite Family Member" id="InviteMemberID" />-->
+                <a href="#popupAddMember" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left ui-btn-a" data-transition="pop">Invite Family Member</a>
+                <div data-role="popup" id="popupAddMember" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3>Enter Email Address</h3>
+                        <h:form id="newMemberForm">
+                            <h:inputText id="emailID" jp:placeholder="Email Address" value="#{listController.memberEmail}"/>
+                            <div class="message">
+                                <h:outputText id="resultStr" value="#{listController.validationMessage}"/><br/><br/>
+                            </div>
+                            <h:commandButton value="Send Invite" id="sendInviteID" action="#{listController.addNewMember(listController.theModel.listName, loginController.theModel.email)}"/>
+                        </h:form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </h:body>
+</html>

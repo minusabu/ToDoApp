@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 25, 2015, 3:17:24 PM
+    Author     : MinuRachel
+*/
+
+
+div.ui-field-contain label { 
+
+  /*text-align: right;*/ 
+  float: left; 
+  margin-right: 20px;
+}
+
+div.ui-content { 
+margin-right: 175px;
+margin-left: 175px;
+
+}
+div.message{
+    color: red;
+    font-style: italic;
+    margin-top: 25px;
+    text-align: center;
+}
+div.logoutdiv{
+    float: right;
+}
+div.completed{
+    text-decoration: line-through;
+}

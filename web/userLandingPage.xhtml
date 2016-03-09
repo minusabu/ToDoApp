@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jp="http://xmlns.jcp.org/jsf/passthrough"
+>
+    <h:head>
+        <title>Home</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css"/>
+        <h:outputStylesheet name="./css/layout.css"/>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    </h:head>
+    <h:body>
+        <div data-role="page">
+            
+            <div data-role="header">
+                <a href="#popupLogin" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-left ui-btn-a" data-transition="pop">Create New List</a>
+                <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3>Please name your list</h3>
+                        <h:form id="newListForm">
+                            <h:inputText id="listNameID" jp:placeholder="List Name" value="#{listController.theModel.listName}"/>
+                            <h:commandButton value="Create New List" id="createNewListID" action="#{listController.addNewList(loginController.theModel.email)}"/>
+                        </h:form>
+                    </div>
+                </div>
+                
+                <h1>ToDoMate</h1>
+
+                <a href="#popupLogout" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-icon-power ui-btn-icon-left ui-btn-a" data-transition="pop">Logout</a>
+                <div data-role="popup" id="popupLogout" data-theme="a" class="ui-corner-all">
+                    <div style="padding:10px 20px;">
+                        <h3>Are you sure you want to Logout?</h3>
+                        <h:form id="logoutForm">
+                            <h:commandButton value="Yes" id="yesID" class="ui-btn ui-btn-inline" action="#{loginController.logout}"/>
+                            <h:commandButton value="No" id="noID" class="ui-btn- ui-btn-inline" action="userLandingPage.xhtml"/>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+
+            <br/><br/><center><h2>My Lists</h2></center><br/><br/>
+            <div data-role="main" class="ui-content">
+
+                Select a List:
+                <h:form id="mylistform">
+                    <div data-role="main" class="ui-field-contain">
+                        <h:selectOneMenu id="mylists" value="#{listController.theModel.listName}">
+                            <f:selectItem itemLabel="Select a list" itemValue="" />
+                            <f:selectItems value="#{loginController.myLists}" var="list" itemValue="#{list.listName}" itemLabel="#{list.listName}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <h:commandButton value="View List" id="viewListID" class="ui-btn ui-icon-eye ui-btn-icon-left" action="#{listController.viewSelectedList(listController.theModel.listName,loginController.theModel.email)}"/>
+                </h:form>
+
+                <br/><br/><br/><center><h2>My Requests</h2></center><br/><br/>
+
+                <h:form id="myrequestsform">
+                    <div data-role="main" class="ui-field-contain">
+                        <h:selectOneMenu id="myRequests" value="#{listController.theRequestModel.listId}">
+                            <f:selectItem itemLabel="Select a List Request" itemValue="" />
+                            <f:selectItems value="#{loginController.myRequests}" var="aRequests" itemValue="#{aRequests.listID}" itemLabel="#{aRequests.listName}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <h:commandButton value="Accept Request" id="acceptID" class="ui-btn ui-icon-eye ui-btn-icon-left" action="#{listController.performAcceptance(listController.theRequestModel.listId,loginController.theModel.email)}"/>
+                    <h:commandButton value="Decline Request" id="declineID" class="ui-btn ui-icon-eye ui-btn-icon-left" action="#{listController.performDenial(listController.theRequestModel.listId,loginController.theModel.email)}"/>
+                </h:form>
+
+            </div>
+        </div>
+    </h:body>
+</html>
